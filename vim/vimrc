@@ -12,59 +12,74 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+"显示函数原型
+Plug 'vim-scripts/echofunc.vim'
+
+"文本对象组合使用能让更改成对的符号异常方便
+Plug 'tpope/vim-surround'
+
+"markdown
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+"代码模板
+Plug 'vim-scripts/c.vim'
+
+"符号列表
+Plug 'vim-scripts/taglist.vim'
+"Plug 'vim-scripts/Tagbar'
+
+"头文件和源文件跳转
+Plug 'vim-scripts/a.vim'
+
+"模糊查找
+Plug 'Yggdroot/LeaderF'
+
+"状态栏
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+"配色方案 
 Plug 'tomasr/molokai'
+
+"代码注释
+Plug 'scrooloose/nerdcommenter'
+
+"代码补全
+Plug 'Shougo/neocomplete.vim'  "+lua
+Plug 'vim-scripts/OmniCppComplete'
+"符号补全
+Plug 'Raimondi/delimitMate'
+
 "树形目录
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
-Plug 'scrooloose/nerdcommenter'
-Plug 'tpope/vim-commentary'
-
-Plug 'vim-scripts/a.vim'
-
-Plug 'vim-scripts/Tagbar'
-
-"代码补全
-Plug 'Shougo/neocomplete.vim'  "+lua
-Plug 'vim-scripts/OmniCppComplete'
-Plug 'Raimondi/delimitMate'
-Plug 'tpope/vim-surround'
-
-"Plug 'Shougo/deoplete.nvim' "+python3
-
-Plug 'vim-scripts/taglist.vim'
-
-Plug 'vim-scripts/c.vim'
-
-Plug 'vim-scripts/echofunc.vim'
-
-Plug 'ctrlpvim/ctrlp.vim'
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-
 "代码检测
 Plug 'dense-analysis/ale'
+
 "代码对齐
 Plug 'godlygeek/tabular'
+
 "格式化
 Plug 'junegunn/vim-easy-align'
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+
 "快速跳转
 Plug 'justinmk/vim-sneak'
-"快速选择
-Plug 'terryma/vim-expand-region'
-map K <Plug>(expand_region_expand)
-map J <Plug>(expand_region_shrink)
+
 "版本控制
 Plug 'mhinz/vim-signify'
+
 "多光标
 Plug 'terryma/vim-multiple-cursors'
+"tags管理
+Plug 'ludovicchabant/vim-gutentags'
+
+"代码格式化
+Plug 'Chiel92/vim-autoformat'
+
 call plug#end()
+
+
 
 "*****************************************************  
 "                                                    *
@@ -77,10 +92,9 @@ call plug#end()
 let mapleader = ","
 let g:mapleader = ","
 
-" 配色方案 
-colorscheme molokai 
 set t_Co=256
 
+set ttymouse=xterm2
 " Switch syntax highlighting on, when the terminal has colors
 syntax enable
 
@@ -130,7 +144,7 @@ set backspace=eol,start,indent
 set whichwrap+=b,s,<,>,[,],h,l
 
 "带有如下符号的单词不要换行分割
-set iskeyword+=$,@,%,#
+set iskeyword+=$,@,%,#,-
 
 " Ignore case when searching
 set ignorecase
@@ -180,7 +194,7 @@ set scrolloff=3
 
 " Always show the status line
 set laststatus=2
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}:%{&fenc!=''?&fenc:&enc}]\ [TYPE=%Y]\ [ROW=%03l/%L(%p%%)]\ [COL=%03v]
+"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}:%{&fenc!=''?&fenc:&enc}]\ [TYPE=%Y]\ [ROW=%03l/%L(%p%%)]\ [COL=%03v]
 
 "Set utf8 as standard encoding 
 set encoding=utf-8
@@ -242,15 +256,10 @@ map <silent> <leader><cr> :noh<cr>
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
-map <left> <ESC>:NERDTreeToggle<RETURN>
-map <right> <ESC>:Tlist<RETURN>
-
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
 map <F12> ggVGg?
-map <F4> :!ctags -R --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <cr>
-
 
 " Smart way to move between windows
 noremap <C-j> <C-W>j
@@ -259,7 +268,7 @@ noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 
 "*****************************************************  
@@ -270,20 +279,25 @@ noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 "ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --if0=yes --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q -R -f ~/.vim/systags /usr/include /usr/local/include
 
 "//;不可省略 表示当前目录不存在tags，则在父目录中寻找
-set tags=tags; 
+"set tags=tags;
+set tags=./.tags;,.tags
 set tags+=/root/.vim/systags
-set tags+=/root/.vim/cpptags/cpptags
+"set tags+=/root/.vim/cpptags/cpptags
 set path+=/root/yanwf/svn/gapnet/gapnet_v3.0/base,/root/yanwf/svn/gapnet/gapnet_v3.0/interface
+
+map <F4> :!ctags -R --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <cr>
+
 "*****************************************************  
 "                                                    *
 "       Cscope配置                                   *  
 "                                                    *
 "*****************************************************  
 if has("cscope")
-	set csprg=/usr/bin/cscope " 指定用来执行cscope的命令
+	"set csprg=/usr/bin/cscope " 指定用来执行cscope的命令
+	set csprg=/usr/bin/gtags-cscope " 指定用来执行cscope的命令
 	set csto=1 " 设置cstag命令查找次序：0先找cscope数据库再找标签文件；1先找标签文件再找cscope数据库
 	set cst " 同时搜索cscope数据库和标签文件
-    set cscopequickfix=s-,c-,d-,i-,t-,e-,a- " 使用QuickFix窗口来显示cscope查找结果
+    "set cscopequickfix=s-,c-,d-,i-,t-,e-,a- " 使用QuickFix窗口来显示cscope查找结果
 	set nocsverb
 	if filereadable("cscope.out") " 若当前目录下存在cscope数据库，添加该数据库到vim
 		cs add cscope.out
@@ -304,28 +318,12 @@ nmap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
 
 
-nmap <leader>hs :scs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>hg :scs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>hc :scs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>ht :scs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>he :scs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>hf :scs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <leader>hi :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <leader>hd :scs find d <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>ha :scs find a <C-R>=expand("<cword>")<CR><CR>
-
-
-
-nmap <leader>vs :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>vg :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>vc :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>vt :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>ve :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>vf :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <leader>vi :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <leader>vd :vert scs find d <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>va :vert scs find a <C-R>=expand("<cword>")<CR><CR>
-
+"*****************************************************  
+"                                                    *
+"       molokai配置                                  * 
+"                                                    *
+"*****************************************************  
+colorscheme molokai 
 
 "*****************************************************  
 "                                                    *
@@ -354,6 +352,7 @@ let g:NERDCustomDelimiters = {
 "                                                    *
 "*****************************************************  
 nmap <leader>nt :NERDTreeToggle<cr>
+map <left> <ESC>:NERDTreeToggle<RETURN>
 let NERDTreeChDirMode=2
 let NERDTreeWinSize=35
 let NERDTreeShowBookmarks=1
@@ -385,8 +384,8 @@ let g:NERDTreeIndicatorMapCustom = {
 "       taglist配置                                  *  
 "                                                    *
 "*****************************************************  
-"<leader>tl 打开taglist窗口
 nmap <leader>tl :Tlist<CR><c-l>                
+map <right> <ESC>:Tlist<RETURN>
 let Tlist_Ctags_Cmd="ctags"
 let Tlist_Show_One_File        = 1             " 只显示当前文件的tags
 let Tlist_File_Fold_Auto_Close = 1             " 非当前文件，自动折叠
@@ -450,76 +449,41 @@ let OmniCpp_DefaultNamespaces = ["std", "gapnet"]
 "        neocomplete配置                             *
 "                                                    *
 "*****************************************************  
-"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-" Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-" Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : '',
     \ 'vimshell' : $HOME.'/.vimshell_hist',
     \ 'scheme' : $HOME.'/.gosh_completions'
         \ }
 
-" Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
+  return pumvisible() ? "\<C-y>" : "\<CR>"
+  "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
 endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
 "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#enable_auto_select = 1
 
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 
 "*****************************************************  
@@ -530,7 +494,6 @@ let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 let g:airline_theme='papercolor'
 
 
-
 "*****************************************************  
 "                                                    *
 "   vim-instant-markdown                             *  
@@ -539,5 +502,117 @@ let g:airline_theme='papercolor'
 
 let g:instant_markdown_slow = 1
 let g:instant_markdown_autostart = 0
-":InstantMarkdownPreview
 
+
+"*****************************************************  
+"                                                    *
+"  tabular                                           *  
+"                                                    *
+"*****************************************************  
+" 冒号对齐：:Tab /:
+" 逗号对齐 :Tabularize /,
+" 运行上一个对齐命令 :Tab
+" // 对齐（需要 escape）: :Tab /\/\/
+
+"*****************************************************  
+"                                                    *
+"  vim-easy-align                                    *  
+"                                                    *
+"*****************************************************  
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+"*****************************************************  
+"                                                    *
+"  dense-analysis/ale                           	 *  
+"                                                    *
+"*****************************************************  
+" 对应语言需要安装相应的检查工具
+"    let g:ale_linters_explicit = 1 "除g:ale_linters指定，其他不可用
+"    let g:ale_linters = {
+"\   'cpp': ['cppcheck','clang','gcc'],
+"\   'c': ['cppcheck','clang', 'gcc'],
+"\   'python': ['pylint'],
+"\   'bash': ['shellcheck'],
+"\   'go': ['golint'],
+"\}
+"
+    let g:ale_sign_column_always = 1
+    let g:ale_completion_delay = 500
+    let g:ale_echo_delay = 20
+    let g:ale_lint_delay = 500
+    let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+    let g:ale_lint_on_text_changed = 'normal'
+    let g:ale_lint_on_insert_leave = 1
+    let g:airline#extensions#ale#enabled = 1
+    "let g:ale_set_quickfix = 1
+    "let g:ale_open_list = 1"打开quitfix对话框
+
+    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+    let g:ale_c_cppcheck_options = ''
+    let g:ale_cpp_cppcheck_options = ''
+
+    let g:ale_sign_error = ">>"
+    let g:ale_sign_warning = "--"
+
+"*****************************************************  
+"                                                    *
+" vim-gutentags                                      *
+"                                                    *
+"*****************************************************  
+" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+let s:vim_tags = expand('~/.cache/tags')
+let g:gutentags_cache_dir = s:vim_tags
+
+" 检测 ~/.cache/tags 不存在就新建
+if !isdirectory(s:vim_tags)
+   silent! call mkdir(s:vim_tags, 'p')
+endif
+"在项目根目录 touch 一个空的名为 .root 的文件
+" gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
+let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
+
+" 所生成的数据文件的名称
+let g:gutentags_ctags_tagfile = '.tags'
+
+" 同时开启 ctags 和 gtags 支持：
+let g:gutentags_modules = []
+if executable('ctags')
+	let g:gutentags_modules += ['ctags']
+endif
+if executable('gtags-cscope') && executable('gtags')
+	let g:gutentags_modules += ['gtags_cscope']
+endif
+
+" 配置 ctags 的参数
+let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" 如果使用 universal ctags 需要增加下面一行
+let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+
+" 禁用 gutentags 自动加载 gtags 数据库的行为
+let g:gutentags_auto_add_gtags_cscope = 0
+
+
+"*****************************************************  
+"                                                    *
+" Yggdroot/LeaderF									 *
+"                                                    *
+"*****************************************************  
+" Ctrl + p 打开文件搜索
+let g:Lf_ShortcutF = '<c-p>'    
+" 打开函数列表
+noremap <leader>lf :LeaderfFunction<cr>
+
+
+"*****************************************************  
+"                                                    *
+" vim-autoformat                                     *
+"                                                    *
+"*****************************************************  
+noremap <leader>af :Autoformat<CR>:w<CR>
+let g:autoformat_verbosemode=1
+"au BufWrite * :Autoformat
