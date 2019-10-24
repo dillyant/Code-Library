@@ -1,5 +1,5 @@
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+  silent !curl -fkLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
@@ -12,16 +12,21 @@ endif
 
 call plug#begin('~/.vim/plugged')
 
+"配色方案 
+Plug 'morhetz/gruvbox'
+Plug 'flazz/vim-colorschemes'
+
 "显示函数原型
-Plug 'vim-scripts/echofunc.vim'
+"Plug 'vim-scripts/echofunc.vim'
 
 "文本对象组合使用能让更改成对的符号异常方便
-Plug 'tpope/vim-surround'
+"Plug 'tpope/vim-surround'
 
 "markdown
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+"Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 "代码模板
-Plug 'vim-scripts/c.vim'
+"Plug 'vim-scripts/c.vim'
+"Plug 'SirVer/ultisnips'
 
 "符号列表
 Plug 'vim-scripts/taglist.vim'
@@ -31,51 +36,47 @@ Plug 'vim-scripts/taglist.vim'
 Plug 'vim-scripts/a.vim'
 
 "模糊查找
-Plug 'Yggdroot/LeaderF'
+"Plug 'Yggdroot/LeaderF'
 
 "状态栏
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-"配色方案 
-Plug 'tomasr/molokai'
+"代码高亮
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 "代码注释
-Plug 'scrooloose/nerdcommenter'
+"Plug 'scrooloose/nerdcommenter'
 
-"代码补全
-Plug 'Shougo/neocomplete.vim'  "+lua
+"补全
 Plug 'vim-scripts/OmniCppComplete'
-"符号补全
-Plug 'Raimondi/delimitMate'
+"Plug 'Valloric/YouCompleteMe'
+"Plug 'Shougo/neocomplete.vim'  "+lua
+"Plug 'Raimondi/delimitMate'
 
 "树形目录
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+
+"版本控制
+"Plug 'mhinz/vim-signify'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
 
 "代码检测
 Plug 'dense-analysis/ale'
 
-"代码对齐
-Plug 'godlygeek/tabular'
-
-"格式化
-Plug 'junegunn/vim-easy-align'
-
 "快速跳转
-Plug 'justinmk/vim-sneak'
-
-"版本控制
-Plug 'mhinz/vim-signify'
+"Plug 'justinmk/vim-sneak'
 
 "多光标
-Plug 'terryma/vim-multiple-cursors'
+"Plug 'terryma/vim-multiple-cursors'
 "tags管理
-Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 
-"代码格式化
-Plug 'Chiel92/vim-autoformat'
+"格式化
+"Plug 'godlygeek/tabular'
+"Plug 'junegunn/vim-easy-align'
+"Plug 'Chiel92/vim-autoformat'
 
 call plug#end()
 
@@ -270,6 +271,20 @@ noremap <C-l> <C-W>l
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
+"*****************************************************  
+"                                                    *
+"       colorscheme配置                                     *  
+"                                                    *
+"*****************************************************  
+" colorscheme atom    
+" colorscheme molokai    
+colorscheme luna-term  
+"
+" colorscheme gruvbox
+" let g:gruvbox_contrast_light="light"
+" let g:gruvbox_contrast_dark="hard"
+" let g:gruvbox_improved_warnings=1
+
 
 "*****************************************************  
 "                                                    *
@@ -280,10 +295,10 @@ noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 "//;不可省略 表示当前目录不存在tags，则在父目录中寻找
 "set tags=tags;
-set tags=./.tags;,.tags
+set tags=./tags,tags;
 set tags+=/root/.vim/systags
-"set tags+=/root/.vim/cpptags/cpptags
-set path+=/root/yanwf/svn/gapnet/gapnet_v3.0/base,/root/yanwf/svn/gapnet/gapnet_v3.0/interface
+set path+=/usr/include,/usr/local/include/
+"set path+=/root/yanwf/svn/gapnet/gapnet_v3.0/base,/root/yanwf/svn/gapnet/gapnet_v3.0/interface
 
 map <F4> :!ctags -R --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <cr>
 
@@ -317,13 +332,6 @@ nmap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 nmap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
 
-
-"*****************************************************  
-"                                                    *
-"       molokai配置                                  * 
-"                                                    *
-"*****************************************************  
-colorscheme molokai 
 
 "*****************************************************  
 "                                                    *
@@ -449,49 +457,57 @@ let OmniCpp_DefaultNamespaces = ["std", "gapnet"]
 "        neocomplete配置                             *
 "                                                    *
 "*****************************************************  
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return pumvisible() ? "\<C-y>" : "\<CR>"
-  "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-endfunction
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-let g:neocomplete#enable_auto_select = 1
-
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-
+"let g:acp_enableAtStartup = 0
+"let g:neocomplete#enable_at_startup = 1
+"let g:neocomplete#enable_smart_case = 1
+"let g:neocomplete#sources#syntax#min_keyword_length = 3
+"let g:neocomplete#sources#dictionary#dictionaries = {
+"    \ 'default' : '',
+"    \ 'vimshell' : $HOME.'/.vimshell_hist',
+"    \ 'scheme' : $HOME.'/.gosh_completions'
+"        \ }
+"
+"if !exists('g:neocomplete#keyword_patterns')
+"    let g:neocomplete#keyword_patterns = {}
+"endif
+"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+"
+"inoremap <expr><C-g>     neocomplete#undo_completion()
+"inoremap <expr><C-l>     neocomplete#complete_common_string()
+"
+"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+"function! s:my_cr_function()
+"  return pumvisible() ? "\<C-y>" : "\<CR>"
+"  "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+"endfunction
+""inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+""inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+"
+"let g:neocomplete#enable_auto_select = 1
+"
+"if !exists('g:neocomplete#sources#omni#input_patterns')
+"  let g:neocomplete#sources#omni#input_patterns = {}
+"endif
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+"
+"
 "*****************************************************  
 "                                                    *
 "        vim-airline                                     *  
 "                                                    *
 "*****************************************************  
 let g:airline_theme='papercolor'
+" let g:airline_theme="ravenpower"
+" let g:airline_theme="minimalist"
+" let g:airline_theme="kolor"
+" let g:airline_theme="jellybeans"
+" let g:airline_theme="distinguished"
+" let g:airline_theme="base16_google"
+" let g:airline_theme="behelit"
+"
 
 
 "*****************************************************  
@@ -616,3 +632,56 @@ noremap <leader>lf :LeaderfFunction<cr>
 noremap <leader>af :Autoformat<CR>:w<CR>
 let g:autoformat_verbosemode=1
 "au BufWrite * :Autoformat
+
+"*****************************************************  
+"                                                    *
+" ycm                                                *
+"                                                    *
+"***************************************************** 
+"set completeopt=longest,menu
+"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+"
+"let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+"let g:ycm_confirm_extra_conf = 0
+""let g:ycm_key_invoke_completion='<C-j>'
+"let g:ycm_error_symbol = 'E>'
+"let g:ycm_warning_symbol = 'W>'
+"" 使用 NerdFont 中的图标表示错误和警告
+"" let g:ycm_error_symbol = '﯇'
+"" let g:ycm_warning_symbol = '卵'
+"let g:ycm_enable_diagnostic_signs = 1
+"let g:ycm_enable_diagnostic_highlighting = 1
+"let g:ycm_collect_identifiers_from_comments_and_strings = 0
+"let g:ycm_complete_in_comments = 1
+"let g:ycm_complete_in_strings = 1
+"let g:ycm_min_num_of_chars_for_completion = 2
+"let g:ycm_python_binary_path = 'python'
+"let g:ycm_semantic_triggers =  {
+"      \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+"      \ 'cs,lua,javascript': ['re!\w{2}'],
+"      \}
+
+
+""****************************************************  
+"                                                    *
+" cpp-enhanced-highlight                             *
+"                                                    *
+"***************************************************** 
+"let g:cpp_class_scope_highlight = 1
+"let g:cpp_member_variable_highlight = 1
+"let g:cpp_concepts_highlight = 1
+"let g:cpp_experimental_simple_template_highlight = 1
+" 文件较大时使用下面的设置高亮模板速度较快，但会有一些小错误
+" let g:cpp_experimental_template_highlight = 1
+
+
+""****************************************************  
+"                                                    *
+" UltiSnips                                          *
+"                                                    *
+"***************************************************** 
+"let g:UltiSnipsExpandTrigger="<C-j>"
+"let g:UltiSnipsListSnippets="<C-e>"
+"let g:UltiSnipsJumpForwardTrigger="<C-j>"
+"let g:UltiSnipsJumpBackwardTrgger="<C-k>"
