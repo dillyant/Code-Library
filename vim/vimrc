@@ -25,7 +25,7 @@ Plug 'flazz/vim-colorschemes'
 "markdown
 "Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 "代码模板
-"Plug 'vim-scripts/c.vim'
+Plug 'vim-scripts/c.vim'
 "Plug 'SirVer/ultisnips'
 
 "符号列表
@@ -70,6 +70,7 @@ Plug 'dense-analysis/ale'
 
 "多光标
 "Plug 'terryma/vim-multiple-cursors'
+
 "tags管理
 "Plug 'ludovicchabant/vim-gutentags'
 
@@ -212,6 +213,7 @@ set expandtab
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
+set shiftround
 set smarttab
 
 " Linebreak on 100 characters
@@ -221,6 +223,7 @@ set formatoptions+=qrnlt
 
 "自动换行
 set wrap
+set cindent
 set autoindent
 set smartindent 
 
@@ -260,6 +263,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
 
+"ROT13 encrypt
 map <F12> ggVGg?
 
 " Smart way to move between windows
