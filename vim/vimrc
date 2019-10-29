@@ -24,6 +24,7 @@ Plug 'flazz/vim-colorschemes'
 
 "markdown
 "Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+
 "代码模板
 Plug 'vim-scripts/c.vim'
 "Plug 'SirVer/ultisnips'
@@ -72,7 +73,9 @@ Plug 'dense-analysis/ale'
 "Plug 'terryma/vim-multiple-cursors'
 
 "tags管理
-"Plug 'ludovicchabant/vim-gutentags'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
+Plug 'skywind3000/vim-preview'
 
 "格式化
 "Plug 'godlygeek/tabular'
@@ -99,9 +102,6 @@ set t_Co=256
 set ttymouse=xterm2
 " Switch syntax highlighting on, when the terminal has colors
 syntax enable
-
-"打开man手册，分割窗口 <leader>K
-runtime! ftplugin/man.vim
 
 "允许未保存切换buffer 隐藏buff
 set hidden
@@ -298,11 +298,9 @@ colorscheme luna-term
 "ctags -I __THROW -I __attribute_pure__ -I __nonnull -I __attribute__ --if0=yes --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q -R -f ~/.vim/systags /usr/include /usr/local/include
 
 "//;不可省略 表示当前目录不存在tags，则在父目录中寻找
-"set tags=tags;
-set tags=./tags,tags;
+set tags=tags;
 set tags+=/root/.vim/systags
 set path+=/usr/include,/usr/local/include/
-"set path+=/root/yanwf/svn/gapnet/gapnet_v3.0/base,/root/yanwf/svn/gapnet/gapnet_v3.0/interface
 
 map <F4> :!ctags -R --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <cr>
 
@@ -316,26 +314,8 @@ if has("cscope")
 	set csprg=/usr/bin/gtags-cscope " 指定用来执行cscope的命令
 	set csto=1 " 设置cstag命令查找次序：0先找cscope数据库再找标签文件；1先找标签文件再找cscope数据库
 	set cst " 同时搜索cscope数据库和标签文件
-    "set cscopequickfix=s-,c-,d-,i-,t-,e-,a- " 使用QuickFix窗口来显示cscope查找结果
-	set nocsverb
-	if filereadable("cscope.out") " 若当前目录下存在cscope数据库，添加该数据库到vim
-		cs add cscope.out
-	elseif $CSCOPE_DB != "" " 否则只要环境变量CSCOPE_DB不为空，则添加其指定的数据库到vim
-		cs add $CSCOPE_DB
-	endif
-	set csverb
+    set cscopequickfix=s-,c-,d-,i-,t-,e-,a- " 使用QuickFix窗口来显示cscope查找结果
 endif
-
-nmap <leader>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>t :cs find t <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-nmap <leader>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>a :cs find a <C-R>=expand("<cword>")<CR><CR>
-
 
 "*****************************************************  
 "                                                    *
@@ -360,7 +340,7 @@ let g:NERDCustomDelimiters = {
 
 "*****************************************************  
 "                                                    *
-"      The-NERD-tree配置                             *  
+"    scrooloose/nerdtree                             *
 "                                                    *
 "*****************************************************  
 nmap <leader>nt :NERDTreeToggle<cr>
@@ -503,10 +483,10 @@ let OmniCpp_DefaultNamespaces = ["std", "gapnet"]
 "        vim-airline                                     *  
 "                                                    *
 "*****************************************************  
-let g:airline_theme='papercolor'
-" let g:airline_theme="ravenpower"
-" let g:airline_theme="minimalist"
-" let g:airline_theme="kolor"
+"let g:airline_theme='papercolor'
+"let g:airline_theme="ravenpower"
+"let g:airline_theme="minimalist"
+let g:airline_theme="kolor"
 " let g:airline_theme="jellybeans"
 " let g:airline_theme="distinguished"
 " let g:airline_theme="base16_google"
@@ -557,24 +537,24 @@ nmap ga <Plug>(EasyAlign)
 "\   'go': ['golint'],
 "\}
 "
-    let g:ale_sign_column_always = 1
-    let g:ale_completion_delay = 500
-    let g:ale_echo_delay = 20
-    let g:ale_lint_delay = 500
-    let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-    let g:ale_lint_on_text_changed = 'normal'
-    let g:ale_lint_on_insert_leave = 1
-    let g:airline#extensions#ale#enabled = 1
-    "let g:ale_set_quickfix = 1
-    "let g:ale_open_list = 1"打开quitfix对话框
+let g:ale_sign_column_always = 1
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+let g:ale_lint_delay = 500
+let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:airline#extensions#ale#enabled = 1
+"let g:ale_set_quickfix = 1
+"let g:ale_open_list = 1"打开quitfix对话框
 
-    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
-    let g:ale_c_cppcheck_options = ''
-    let g:ale_cpp_cppcheck_options = ''
+let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+let g:ale_c_cppcheck_options = ''
+let g:ale_cpp_cppcheck_options = ''
 
-    let g:ale_sign_error = ">>"
-    let g:ale_sign_warning = "--"
+let g:ale_sign_error = ">>"
+let g:ale_sign_warning = "--"
 
 "*****************************************************  
 "                                                    *
@@ -616,6 +596,17 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 " 禁用 gutentags 自动加载 gtags 数据库的行为
 let g:gutentags_auto_add_gtags_cscope = 0
 
+" change focus to quickfix window after search (optional).
+let g:gutentags_plus_switch = 1
+
+"预览 quickfix 窗口 ctrl-w z 关闭
+"往上滚动预览窗口
+noremap <Leader>u :PreviewScroll -1<cr> 
+"往下滚动预览窗口
+noremap <leader>d :PreviewScroll +1<cr> 
+"打开预览窗口
+autocmd FileType qf nnoremap <silent><buffer> p :PreviewQuickfix<cr>
+autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 
 "*****************************************************  
 "                                                    *
@@ -669,7 +660,7 @@ let g:autoformat_verbosemode=1
 
 ""****************************************************  
 "                                                    *
-" vim-cpp-enhanced-highlight                         *
+"octol/vim-cpp-enhanced-highlight                    *
 "                                                    *
 "***************************************************** 
 "let g:cpp_class_scope_highlight = 1
