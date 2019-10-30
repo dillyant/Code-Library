@@ -4,87 +4,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-"*****************************************************  
-"                                                    *
-"       vim-plug配置                                 *  
-"                                                    *
-"*****************************************************  
-
-call plug#begin('~/.vim/plugged')
-
-"配色方案 
-Plug 'morhetz/gruvbox'
-Plug 'flazz/vim-colorschemes'
-
-"显示函数原型
-"Plug 'vim-scripts/echofunc.vim'
-
-"文本对象组合使用能让更改成对的符号异常方便
-"Plug 'tpope/vim-surround'
-
-"markdown
-"Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
-
-"代码模板
-Plug 'vim-scripts/c.vim'
-"Plug 'SirVer/ultisnips'
-
-"符号列表
-Plug 'vim-scripts/taglist.vim'
-"Plug 'vim-scripts/Tagbar'
-
-"头文件和源文件跳转
-Plug 'vim-scripts/a.vim'
-
-"模糊查找
-"Plug 'Yggdroot/LeaderF'
-
-"状态栏
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-"代码高亮
-Plug 'octol/vim-cpp-enhanced-highlight'
-
-"代码注释
-"Plug 'scrooloose/nerdcommenter'
-
-"补全
-Plug 'vim-scripts/OmniCppComplete'
-"Plug 'Valloric/YouCompleteMe'
-"Plug 'Shougo/neocomplete.vim'  "+lua
-"Plug 'Raimondi/delimitMate'
-
-"树形目录
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'jistr/vim-nerdtree-tabs'
-
-"版本控制
-"Plug 'mhinz/vim-signify'
-"Plug 'Xuyuanp/nerdtree-git-plugin'
-
-"代码检测
-Plug 'dense-analysis/ale'
-
-"快速跳转
-"Plug 'justinmk/vim-sneak'
-
-"多光标
-"Plug 'terryma/vim-multiple-cursors'
-
-"tags管理
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
-Plug 'skywind3000/vim-preview'
-
-"格式化
-"Plug 'godlygeek/tabular'
-"Plug 'junegunn/vim-easy-align'
-"Plug 'Chiel92/vim-autoformat'
-
-call plug#end()
-
-
 
 "*****************************************************  
 "                                                    *
@@ -266,28 +185,110 @@ map <leader>pp :setlocal paste!<cr>
 "ROT13 encrypt
 map <F12> ggVGg?
 
-" Smart way to move between windows
-noremap <C-j> <C-W>j
-noremap <C-k> <C-W>k
-noremap <C-h> <C-W>h
-noremap <C-l> <C-W>l
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
+noremap <C-h> <C-W>h
+noremap <C-l> <C-W>l
+
+
+"*****************************************************  
+"                                                    *
+"       vim-plug配置                                 *  
+"                                                    *
+"*****************************************************  
+
+call plug#begin('~/.vim/plugged')
+
+"配色方案 
+Plug 'morhetz/gruvbox'
+Plug 'flazz/vim-colorschemes'
+
+"显示函数原型
+"Plug 'vim-scripts/echofunc.vim'
+
+"文本对象组合使用能让更改成对的符号异常方便
+"Plug 'tpope/vim-surround'
+
+"markdown
+"Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+
+"代码模板
+Plug 'vim-scripts/c.vim'
+"Plug 'SirVer/ultisnips'
+
+"符号列表
+Plug 'vim-scripts/taglist.vim'
+"Plug 'vim-scripts/Tagbar'
+
+"头文件和源文件跳转
+Plug 'vim-scripts/a.vim'
+
+"模糊查找
+"Plug 'Yggdroot/LeaderF'
+
+"状态栏
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+"代码高亮
+Plug 'octol/vim-cpp-enhanced-highlight'
+
+"代码注释
+"Plug 'scrooloose/nerdcommenter'
+
+"补全
+Plug 'vim-scripts/OmniCppComplete'
+"Plug 'Valloric/YouCompleteMe'
+"Plug 'Shougo/neocomplete.vim'  "+lua
+"Plug 'Raimondi/delimitMate'
+
+"树形目录
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'jistr/vim-nerdtree-tabs'
+
+"版本控制
+"Plug 'mhinz/vim-signify'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+
+"代码检测
+"Plug 'dense-analysis/ale'
+
+"快速跳转
+"Plug 'justinmk/vim-sneak'
+
+"多光标
+"Plug 'terryma/vim-multiple-cursors'
+
+"tags管理
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'skywind3000/gutentags_plus'
+Plug 'skywind3000/vim-preview'
+
+"格式化
+"Plug 'godlygeek/tabular'
+"Plug 'junegunn/vim-easy-align'
+"Plug 'Chiel92/vim-autoformat'
+
+call plug#end()
+
+
+
 
 "*****************************************************  
 "                                                    *
 "       colorscheme配置                                     *  
 "                                                    *
 "*****************************************************  
-" colorscheme atom    
-" colorscheme molokai    
-colorscheme luna-term  
+"colorscheme atom    
+colorscheme molokai    
+"colorscheme luna-term  
 "
-" colorscheme gruvbox
-" let g:gruvbox_contrast_light="light"
-" let g:gruvbox_contrast_dark="hard"
-" let g:gruvbox_improved_warnings=1
+"colorscheme gruvbox
+"let g:gruvbox_contrast_light="light"
+"let g:gruvbox_contrast_dark="hard"
+"let g:gruvbox_improved_warnings=1
 
 
 "*****************************************************  
@@ -299,7 +300,7 @@ colorscheme luna-term
 
 "//;不可省略 表示当前目录不存在tags，则在父目录中寻找
 set tags=tags;
-set tags+=/root/.vim/systags
+"set tags+=/root/.vim/systags
 set path+=/usr/include,/usr/local/include/
 
 map <F4> :!ctags -R --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <cr>
