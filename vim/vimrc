@@ -240,7 +240,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 
 "补全
 Plug 'vim-scripts/OmniCppComplete'
-"Plug 'Valloric/YouCompleteMe'
+"Plug 'ycm-core/YouCompleteMe'
 "Plug 'Shougo/neocomplete.vim'  "+lua
 "Plug 'Raimondi/delimitMate'
 
