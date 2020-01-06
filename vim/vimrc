@@ -128,12 +128,13 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 
 " Use spaces instead of tabs, 1 tab == 4 spaces
-set expandtab
+"set smarttab
+"set expandtab
+
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set shiftround
-set smarttab
 
 " Linebreak on 100 characters
 set lbr
@@ -172,6 +173,19 @@ command W w !sudo tee % > /dev/null
 map j gj
 map k gk
 
+" 快速保存
+inoremap jk <esc>:w<cr>
+
+" 窗口移动
+nnoremap H <C-w>h
+nnoremap J <C-w>j
+nnoremap K <C-w>k
+nnoremap L <C-w>l
+
+" 快速缩进
+vnoremap < <gv
+vnoremap > >gv
+
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
 
@@ -188,9 +202,6 @@ map <F12> ggVGg?
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
-noremap <C-h> <C-W>h
-noremap <C-l> <C-W>l
 
 
 "*****************************************************  
@@ -231,6 +242,7 @@ Plug 'vim-scripts/a.vim'
 "状态栏
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+"Plug 'Lokaltog/vim-powerline'
 
 "代码高亮
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -240,13 +252,13 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 
 "补全
 Plug 'vim-scripts/OmniCppComplete'
-"Plug 'ycm-core/YouCompleteMe'
-"Plug 'Shougo/neocomplete.vim'  "+lua
+Plug 'ycm-core/YouCompleteMe'
 "Plug 'Raimondi/delimitMate'
 
 "树形目录
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
+"Plug 'fholgado/minibufexpl.vim'
 
 "版本控制
 "Plug 'mhinz/vim-signify'
@@ -269,7 +281,7 @@ Plug 'skywind3000/vim-preview'
 "格式化
 "Plug 'godlygeek/tabular'
 "Plug 'junegunn/vim-easy-align'
-"Plug 'Chiel92/vim-autoformat'
+Plug 'Chiel92/vim-autoformat'
 
 call plug#end()
 
@@ -427,7 +439,7 @@ let g:EchoFuncAutoStartBalloonDeclaration = 1
 "        omnicppcomplete配置                         *  
 "                                                    *
 "*****************************************************  
-set completeopt=menu,menuone,longest
+set completeopt=menuone,menu,longest
 let OmniCpp_MayCompleteDot = 1 " autocomplete with .
 let OmniCpp_MayCompleteArrow = 1 " autocomplete with ->
 let OmniCpp_MayCompleteScope = 1 " autocomplete with ::
@@ -437,48 +449,7 @@ let OmniCpp_DisplayMode=1 " Class scope completion mode: always show all members
 let OmniCpp_ShowScopeInAbbr=1 " show scope in abbreviation and remove the last column
 let OmniCpp_DefaultNamespaces = ["std", "gapnet"]
 
-"*****************************************************  
-"                                                    *
-"        neocomplete配置                             *
-"                                                    *
-"*****************************************************  
-"let g:acp_enableAtStartup = 0
-"let g:neocomplete#enable_at_startup = 1
-"let g:neocomplete#enable_smart_case = 1
-"let g:neocomplete#sources#syntax#min_keyword_length = 3
-"let g:neocomplete#sources#dictionary#dictionaries = {
-"    \ 'default' : '',
-"    \ 'vimshell' : $HOME.'/.vimshell_hist',
-"    \ 'scheme' : $HOME.'/.gosh_completions'
-"        \ }
-"
-"if !exists('g:neocomplete#keyword_patterns')
-"    let g:neocomplete#keyword_patterns = {}
-"endif
-"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-"
-"inoremap <expr><C-g>     neocomplete#undo_completion()
-"inoremap <expr><C-l>     neocomplete#complete_common_string()
-"
-"inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-"function! s:my_cr_function()
-"  return pumvisible() ? "\<C-y>" : "\<CR>"
-"  "return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-"endfunction
-""inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-""inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-"
-"let g:neocomplete#enable_auto_select = 1
-"
-"if !exists('g:neocomplete#sources#omni#input_patterns')
-"  let g:neocomplete#sources#omni#input_patterns = {}
-"endif
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-"
-"
+
 "*****************************************************  
 "                                                    *
 "        vim-airline                                     *  
@@ -615,7 +586,7 @@ autocmd FileType qf nnoremap <silent><buffer> P :PreviewClose<cr>
 "                                                    *
 "*****************************************************  
 " Ctrl + p 打开文件搜索
-let g:Lf_ShortcutF = '<c-p>'    
+let g:Lf_ShortcutF = '<c-f>'    
 " 打开函数列表
 noremap <leader>lf :LeaderfFunction<cr>
 
@@ -625,40 +596,43 @@ noremap <leader>lf :LeaderfFunction<cr>
 " vim-autoformat                                     *
 "                                                    *
 "*****************************************************  
+
 noremap <leader>af :Autoformat<CR>:w<CR>
-let g:autoformat_verbosemode=1
+"写入时自动格式化
 "au BufWrite * :Autoformat
+
+"debug mode
+"let g:autoformat_verbosemode=1
+let g:formatters_cpp = ['my_custom_cpp']
+let g:formatdef_my_custom_cpp = '"astyle --mode=c --style=kr -T4 -N -U -y -p -xg -H -k3 -j -xb -m0 -M40 -n -xC100\<CR>"'
+
 
 "*****************************************************  
 "                                                    *
-" ycm                                                *
+" YouCompleteMe                                      *
 "                                                    *
 "***************************************************** 
-"set completeopt=longest,menu
-"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-"
-"let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-"let g:ycm_confirm_extra_conf = 0
-""let g:ycm_key_invoke_completion='<C-j>'
-"let g:ycm_error_symbol = 'E>'
-"let g:ycm_warning_symbol = 'W>'
-"" 使用 NerdFont 中的图标表示错误和警告
-"" let g:ycm_error_symbol = '﯇'
-"" let g:ycm_warning_symbol = '卵'
-"let g:ycm_enable_diagnostic_signs = 1
-"let g:ycm_enable_diagnostic_highlighting = 1
-"let g:ycm_collect_identifiers_from_comments_and_strings = 0
-"let g:ycm_complete_in_comments = 1
-"let g:ycm_complete_in_strings = 1
-"let g:ycm_min_num_of_chars_for_completion = 2
-"let g:ycm_python_binary_path = 'python'
-"let g:ycm_semantic_triggers =  {
-"      \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-"      \ 'cs,lua,javascript': ['re!\w{2}'],
-"      \}
+let g:ycm_use_clangd = 0
+let g:ycm_global_ycm_extra_conf ='~/.vim/plugged/YouCompleteMe/third_party/ycmd/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_seed_identifiers_with_syntax=1  
+let g:ycm_error_symbol = 'E>'
+let g:ycm_warning_symbol = 'W>'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1 "注释与字符串中的内容也用于补全
+let g:ycm_complete_in_comments = 1                          "在注释输入中也能补全
+let g:ycm_complete_in_strings = 1                           "在字符串输入中也能补全
+let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']  "映射按键,没有这个会拦截掉tab, 导致其他插件的tab不能用.
+let g:ycm_key_list_previous_completion = ['<c-p>', '<Up>']
+let g:ycm_show_diagnostics_ui = 0                           " 禁用语法检查
 
+let g:ycm_semantic_triggers =  {
+      \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+      \ 'cs,lua,javascript': ['re!\w{2}'],
+      \}
 
+"回车即选中当前项
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"  
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 ""****************************************************  
 "                                                    *
 "octol/vim-cpp-enhanced-highlight                    *
