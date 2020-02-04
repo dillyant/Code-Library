@@ -120,9 +120,9 @@ set laststatus=2
 "Set utf8 as standard encoding 
 set encoding=utf-8
 set termencoding=utf-8
-"set termencoding=gb2312
-set langmenu=zh_CN.UTF-8
 set fileencoding=utf-8
+"gb2312
+"set termencoding=gb2312
 "set fileencoding=gb2312
 "cp936 = gb2312
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
@@ -135,11 +135,6 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 set shiftround
-
-" Linebreak on 100 characters
-set lbr
-set textwidth=100
-set formatoptions+=qrnlt
 
 "自动换行
 set wrap
@@ -175,12 +170,6 @@ map k gk
 
 " 快速保存
 inoremap jk <esc>:w<cr>
-
-" 窗口移动
-nnoremap H <C-w>h
-nnoremap J <C-w>j
-nnoremap K <C-w>k
-nnoremap L <C-w>l
 
 " 快速缩进
 vnoremap < <gv
@@ -312,7 +301,7 @@ colorscheme molokai
 
 "//;不可省略 表示当前目录不存在tags，则在父目录中寻找
 set tags=tags;
-"set tags+=/root/.vim/systags
+set tags+=/root/.vim/systags
 set path+=/usr/include,/usr/local/include/
 
 map <F4> :!ctags -R --languages=c,c++ --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q <cr>
@@ -602,7 +591,7 @@ noremap <leader>af :Autoformat<CR>:w<CR>
 "au BufWrite * :Autoformat
 
 "debug mode
-"let g:autoformat_verbosemode=1
+let g:autoformat_verbosemode=1
 let g:formatters_cpp = ['my_custom_cpp']
 let g:formatdef_my_custom_cpp = '"astyle --mode=c --style=kr -T4 -N -U -y -p -xg -H -k3 -j -xb -m0 -M40 -n -xC100\<CR>"'
 
